@@ -3,3 +3,7 @@ eHFO_classification/result/
 __pycache__
 */__pycache__
 */.ipynb_checkpoints
+result
+data_training
+data
+__pycache__

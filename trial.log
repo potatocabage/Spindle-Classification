@@ -1,0 +1,542 @@
+{'work_dir': '.', 'data_dir': '/home/lawrence/Spindle/wavelet_data', 'res_dir': 'result/', 'num_epochs': 30, 'batch_size': 128, 'learning_rate': 0.0003, 'seed': 0, 'p_val': 0.2, 'p_test': 0.2, 'device': 'cuda:1', 'augmentation_arg': {'random_shift_ms': 45, 'selected_window_size_ms': 200, 'selected_freq_range_hz': [10, 290]}, 'save_checkpoint': True}
+KeysView(NpzFile '/home/lawrence/Spindle/wavelet_data/Pt1/data.npz' with keys: feature, starts, ends, channel_names, labels)
+KeysView(NpzFile '/home/lawrence/Spindle/wavelet_data/Pt2/data.npz' with keys: feature, starts, ends, channel_names, labels)
+length of list_dataset 2
+all ds length 23515
+sample shape torch.Size([1, 224, 224])
+crop freq:  [10, 290] crop time:  200 crop freq index:  [ 96 224] crop time index:  [ 23 201]
+------------ 0 th fold ------------
+train_loader length: 111
+val_loader length: 37
+test_loader length: 37
+/home/weithan/miniconda3/envs/spindle/lib/python3.11/site-packages/torch/nn/modules/conv.py:456: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at /opt/conda/conda-bld/pytorch_1695392026823/work/aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+Epoch 0/30, train loss: 0.5790, train acc: 0.8245
+----------
+Epoch 1/30, train loss: 0.5060, train acc: 0.8911
+----------
+Validation: Time 2.269, loss: 0.499, acc: 0.900
+best_model of best in epoch  2
+Epoch 2/30, train loss: 0.4451, train acc: 0.9128
+----------
+Validation: Time 2.039, loss: 0.439, acc: 0.911
+best_model of best in epoch  3
+Epoch 3/30, train loss: 0.3958, train acc: 0.9178
+----------
+Validation: Time 2.423, loss: 0.319, acc: 0.929
+best_model of best in epoch  4
+Epoch 4/30, train loss: 0.3459, train acc: 0.9203
+----------
+Validation: Time 1.995, loss: 0.350, acc: 0.925
+Epoch 5/30, train loss: 0.3061, train acc: 0.9237
+----------
+Validation: Time 2.329, loss: 0.413, acc: 0.918
+Epoch 6/30, train loss: 0.2800, train acc: 0.9259
+----------
+Validation: Time 1.962, loss: 0.260, acc: 0.920
+best_model of best in epoch  7
+Epoch 7/30, train loss: 0.2382, train acc: 0.9310
+----------
+Validation: Time 2.465, loss: 0.249, acc: 0.920
+best_model of best in epoch  8
+Epoch 8/30, train loss: 0.2382, train acc: 0.9305
+----------
+Validation: Time 2.192, loss: 0.239, acc: 0.925
+best_model of best in epoch  9
+Epoch 9/30, train loss: 0.2111, train acc: 0.9295
+----------
+Validation: Time 2.284, loss: 0.388, acc: 0.925
+Epoch 10/30, train loss: 0.2030, train acc: 0.9310
+----------
+Validation: Time 2.337, loss: 0.239, acc: 0.918
+best_model of best in epoch  11
+Epoch 11/30, train loss: 0.1832, train acc: 0.9353
+----------
+Validation: Time 2.056, loss: 0.243, acc: 0.914
+Epoch 12/30, train loss: 0.1968, train acc: 0.9363
+----------
+Validation: Time 2.488, loss: 0.220, acc: 0.925
+best_model of best in epoch  13
+Epoch 13/30, train loss: 0.1863, train acc: 0.9331
+----------
+Validation: Time 2.101, loss: 0.241, acc: 0.924
+Epoch 14/30, train loss: 0.1865, train acc: 0.9384
+----------
+Validation: Time 2.334, loss: 0.264, acc: 0.929
+Epoch 15/30, train loss: 0.1702, train acc: 0.9400
+----------
+Validation: Time 2.020, loss: 0.215, acc: 0.927
+best_model of best in epoch  16
+Epoch 16/30, train loss: 0.1658, train acc: 0.9417
+----------
+Validation: Time 2.060, loss: 0.216, acc: 0.929
+Epoch 17/30, train loss: 0.1780, train acc: 0.9290
+----------
+Validation: Time 1.988, loss: 0.199, acc: 0.922
+best_model of best in epoch  18
+Epoch 18/30, train loss: 0.1731, train acc: 0.9321
+----------
+Validation: Time 1.997, loss: 0.182, acc: 0.928
+best_model of best in epoch  19
+Epoch 19/30, train loss: 0.1676, train acc: 0.9312
+----------
+Validation: Time 2.034, loss: 0.177, acc: 0.928
+best_model of best in epoch  20
+Epoch 20/30, train loss: 0.1580, train acc: 0.9347
+----------
+Validation: Time 2.058, loss: 0.180, acc: 0.931
+Epoch 21/30, train loss: 0.1542, train acc: 0.9366
+----------
+Validation: Time 2.029, loss: 0.186, acc: 0.927
+Epoch 22/30, train loss: 0.1496, train acc: 0.9381
+----------
+Validation: Time 2.042, loss: 0.185, acc: 0.926
+Epoch 23/30, train loss: 0.1422, train acc: 0.9411
+----------
+Validation: Time 2.045, loss: 0.187, acc: 0.928
+Epoch 24/30, train loss: 0.1373, train acc: 0.9432
+----------
+Validation: Time 2.021, loss: 0.191, acc: 0.921
+Epoch 25/30, train loss: 0.1319, train acc: 0.9471
+----------
+Validation: Time 2.081, loss: 0.184, acc: 0.928
+Epoch 26/30, train loss: 0.1242, train acc: 0.9493
+----------
+Validation: Time 2.027, loss: 0.202, acc: 0.923
+Epoch 27/30, train loss: 0.1215, train acc: 0.9505
+----------
+Validation: Time 2.416, loss: 0.200, acc: 0.921
+Epoch 28/30, train loss: 0.1137, train acc: 0.9553
+----------
+Validation: Time 2.424, loss: 0.214, acc: 0.918
+Epoch 29/30, train loss: 0.1053, train acc: 0.9598
+----------
+Validation: Time 2.178, loss: 0.223, acc: 0.914
+Training complete after 29 epochs in 6 m 15 s
+--------------Testing---------------------
+Validation: Time 2.254, loss: 0.167, acc: 0.936
+------------ 1 th fold ------------
+train_loader length: 111
+val_loader length: 37
+test_loader length: 37
+Epoch 0/30, train loss: 0.6318, train acc: 0.7723
+----------
+Epoch 1/30, train loss: 0.5339, train acc: 0.8855
+----------
+Validation: Time 2.169, loss: 0.476, acc: 0.919
+best_model of best in epoch  2
+Epoch 2/30, train loss: 0.4603, train acc: 0.9118
+----------
+Validation: Time 2.062, loss: 0.410, acc: 0.915
+best_model of best in epoch  3
+Epoch 3/30, train loss: 0.4399, train acc: 0.9165
+----------
+Validation: Time 2.143, loss: 0.392, acc: 0.883
+best_model of best in epoch  4
+Epoch 4/30, train loss: 0.4652, train acc: 0.9183
+----------
+Validation: Time 2.080, loss: 0.495, acc: 0.925
+Epoch 5/30, train loss: 0.3933, train acc: 0.9239
+----------
+Validation: Time 2.263, loss: 0.680, acc: 0.918
+Epoch 6/30, train loss: 0.3404, train acc: 0.9246
+----------
+Validation: Time 2.500, loss: 0.434, acc: 0.913
+Epoch 7/30, train loss: 0.3540, train acc: 0.9271
+----------
+Validation: Time 2.392, loss: 0.261, acc: 0.926
+best_model of best in epoch  8
+Epoch 8/30, train loss: 0.2819, train acc: 0.9316
+----------
+Validation: Time 2.551, loss: 0.235, acc: 0.927
+best_model of best in epoch  9
+Epoch 9/30, train loss: 0.3413, train acc: 0.9143
+----------
+Validation: Time 2.404, loss: 0.240, acc: 0.928
+Epoch 10/30, train loss: 0.2231, train acc: 0.9265
+----------
+Validation: Time 2.324, loss: 0.200, acc: 0.930
+best_model of best in epoch  11
+Epoch 11/30, train loss: 0.2019, train acc: 0.9291
+----------
+Validation: Time 2.297, loss: 0.189, acc: 0.934
+best_model of best in epoch  12
+Epoch 12/30, train loss: 0.1901, train acc: 0.9317
+----------
+Validation: Time 2.555, loss: 0.192, acc: 0.930
+Epoch 13/30, train loss: 0.1814, train acc: 0.9332
+----------
+Validation: Time 2.255, loss: 0.185, acc: 0.929
+best_model of best in epoch  14
+Epoch 14/30, train loss: 0.1748, train acc: 0.9334
+----------
+Validation: Time 2.319, loss: 0.175, acc: 0.935
+best_model of best in epoch  15
+Epoch 15/30, train loss: 0.1670, train acc: 0.9345
+----------
+Validation: Time 2.397, loss: 0.188, acc: 0.929
+Epoch 16/30, train loss: 0.1641, train acc: 0.9346
+----------
+Validation: Time 2.121, loss: 0.179, acc: 0.931
+Epoch 17/30, train loss: 0.1579, train acc: 0.9372
+----------
+Validation: Time 2.489, loss: 0.169, acc: 0.929
+best_model of best in epoch  18
+Epoch 18/30, train loss: 0.1535, train acc: 0.9368
+----------
+Validation: Time 2.223, loss: 0.180, acc: 0.933
+Epoch 19/30, train loss: 0.1500, train acc: 0.9378
+----------
+Validation: Time 2.113, loss: 0.181, acc: 0.931
+Epoch 20/30, train loss: 0.1452, train acc: 0.9421
+----------
+Validation: Time 2.295, loss: 0.184, acc: 0.922
+Epoch 21/30, train loss: 0.1406, train acc: 0.9418
+----------
+Validation: Time 2.332, loss: 0.182, acc: 0.927
+Epoch 22/30, train loss: 0.1354, train acc: 0.9461
+----------
+Validation: Time 2.313, loss: 0.173, acc: 0.927
+Epoch 23/30, train loss: 0.1324, train acc: 0.9467
+----------
+Validation: Time 2.389, loss: 0.186, acc: 0.928
+Epoch 24/30, train loss: 0.1237, train acc: 0.9510
+----------
+Validation: Time 2.239, loss: 0.182, acc: 0.925
+Epoch 25/30, train loss: 0.1266, train acc: 0.9480
+----------
+Validation: Time 2.320, loss: 0.188, acc: 0.931
+Epoch 26/30, train loss: 0.1159, train acc: 0.9525
+----------
+Validation: Time 2.363, loss: 0.201, acc: 0.916
+Epoch 27/30, train loss: 0.1086, train acc: 0.9587
+----------
+Validation: Time 2.337, loss: 0.183, acc: 0.927
+Epoch 28/30, train loss: 0.1028, train acc: 0.9591
+----------
+Validation: Time 2.130, loss: 0.207, acc: 0.930
+Epoch 29/30, train loss: 0.0953, train acc: 0.9626
+----------
+Validation: Time 2.246, loss: 0.217, acc: 0.923
+Training complete after 29 epochs in 6 m 19 s
+--------------Testing---------------------
+Validation: Time 2.083, loss: 0.181, acc: 0.928
+------------ 2 th fold ------------
+train_loader length: 111
+val_loader length: 37
+test_loader length: 37
+Epoch 0/30, train loss: 0.6442, train acc: 0.7976
+----------
+Epoch 1/30, train loss: 0.5647, train acc: 0.8927
+----------
+Validation: Time 2.540, loss: 0.487, acc: 0.913
+best_model of best in epoch  2
+Epoch 2/30, train loss: 0.4878, train acc: 0.9106
+----------
+Validation: Time 2.451, loss: 0.557, acc: 0.913
+Epoch 3/30, train loss: 0.4295, train acc: 0.9233
+----------
+Validation: Time 2.336, loss: 0.397, acc: 0.927
+best_model of best in epoch  4
+Epoch 4/30, train loss: 0.3664, train acc: 0.9247
+----------
+Validation: Time 2.452, loss: 0.339, acc: 0.929
+best_model of best in epoch  5
+Epoch 5/30, train loss: 0.3625, train acc: 0.9280
+----------
+Validation: Time 2.496, loss: 0.526, acc: 0.921
+Epoch 6/30, train loss: 0.3740, train acc: 0.9308
+----------
+Validation: Time 2.538, loss: 0.329, acc: 0.931
+best_model of best in epoch  7
+Epoch 7/30, train loss: 0.3239, train acc: 0.9293
+----------
+Validation: Time 2.579, loss: 0.266, acc: 0.921
+best_model of best in epoch  8
+Epoch 8/30, train loss: 0.3253, train acc: 0.9287
+----------
+Validation: Time 2.423, loss: 0.582, acc: 0.924
+Epoch 9/30, train loss: 0.3513, train acc: 0.9296
+----------
+Validation: Time 2.329, loss: 0.274, acc: 0.928
+Epoch 10/30, train loss: 0.3430, train acc: 0.9294
+----------
+Validation: Time 2.369, loss: 4.041, acc: 0.807
+Epoch 11/30, train loss: 0.3626, train acc: 0.9257
+----------
+Validation: Time 2.300, loss: 0.264, acc: 0.927
+best_model of best in epoch  12
+Epoch 12/30, train loss: 0.2489, train acc: 0.9278
+----------
+Validation: Time 2.482, loss: 0.434, acc: 0.859
+Epoch 13/30, train loss: 0.2072, train acc: 0.9264
+----------
+Validation: Time 2.468, loss: 0.199, acc: 0.927
+best_model of best in epoch  14
+Epoch 14/30, train loss: 0.1899, train acc: 0.9303
+----------
+Validation: Time 2.344, loss: 0.286, acc: 0.928
+Epoch 15/30, train loss: 0.1810, train acc: 0.9312
+----------
+Validation: Time 2.365, loss: 0.184, acc: 0.928
+best_model of best in epoch  16
+Epoch 16/30, train loss: 0.1693, train acc: 0.9357
+----------
+Validation: Time 2.484, loss: 0.181, acc: 0.932
+best_model of best in epoch  17
+Epoch 17/30, train loss: 0.1666, train acc: 0.9368
+----------
+Validation: Time 2.431, loss: 0.182, acc: 0.928
+Epoch 18/30, train loss: 0.1613, train acc: 0.9361
+----------
+Validation: Time 2.418, loss: 0.181, acc: 0.931
+best_model of best in epoch  19
+Epoch 19/30, train loss: 0.1540, train acc: 0.9397
+----------
+Validation: Time 2.374, loss: 0.184, acc: 0.925
+Epoch 20/30, train loss: 0.1546, train acc: 0.9385
+----------
+Validation: Time 2.456, loss: 0.180, acc: 0.932
+best_model of best in epoch  21
+Epoch 21/30, train loss: 0.1466, train acc: 0.9413
+----------
+Validation: Time 2.309, loss: 0.192, acc: 0.924
+Epoch 22/30, train loss: 0.1463, train acc: 0.9434
+----------
+Validation: Time 2.372, loss: 0.176, acc: 0.930
+best_model of best in epoch  23
+Epoch 23/30, train loss: 0.1419, train acc: 0.9438
+----------
+Validation: Time 2.449, loss: 0.179, acc: 0.931
+Epoch 24/30, train loss: 0.1380, train acc: 0.9464
+----------
+Validation: Time 2.407, loss: 0.190, acc: 0.929
+Epoch 25/30, train loss: 0.1323, train acc: 0.9459
+----------
+Validation: Time 2.490, loss: 0.188, acc: 0.926
+Epoch 26/30, train loss: 0.1261, train acc: 0.9500
+----------
+Validation: Time 2.412, loss: 0.190, acc: 0.926
+Epoch 27/30, train loss: 0.1216, train acc: 0.9535
+----------
+Validation: Time 2.371, loss: 0.201, acc: 0.922
+Epoch 28/30, train loss: 0.1209, train acc: 0.9524
+----------
+Validation: Time 2.438, loss: 0.208, acc: 0.927
+Epoch 29/30, train loss: 0.1115, train acc: 0.9582
+----------
+Validation: Time 2.456, loss: 0.211, acc: 0.925
+Training complete after 29 epochs in 6 m 53 s
+--------------Testing---------------------
+Validation: Time 2.489, loss: 0.193, acc: 0.922
+------------ 3 th fold ------------
+train_loader length: 111
+val_loader length: 37
+test_loader length: 37
+Epoch 0/30, train loss: 0.5671, train acc: 0.8342
+----------
+Epoch 1/30, train loss: 0.4863, train acc: 0.8996
+----------
+Validation: Time 2.483, loss: 0.486, acc: 0.914
+best_model of best in epoch  2
+Epoch 2/30, train loss: 0.4272, train acc: 0.9166
+----------
+Validation: Time 2.315, loss: 0.404, acc: 0.917
+best_model of best in epoch  3
+Epoch 3/30, train loss: 0.3728, train acc: 0.9227
+----------
+Validation: Time 2.313, loss: 0.373, acc: 0.922
+best_model of best in epoch  4
+Epoch 4/30, train loss: 0.3469, train acc: 0.9257
+----------
+Validation: Time 2.452, loss: 0.804, acc: 0.918
+Epoch 5/30, train loss: 0.2964, train acc: 0.9286
+----------
+Validation: Time 2.262, loss: 0.272, acc: 0.928
+best_model of best in epoch  6
+Epoch 6/30, train loss: 0.2976, train acc: 0.9276
+----------
+Validation: Time 2.553, loss: 0.676, acc: 0.928
+Epoch 7/30, train loss: 0.3279, train acc: 0.9213
+----------
+Validation: Time 2.317, loss: 0.251, acc: 0.931
+best_model of best in epoch  8
+Epoch 8/30, train loss: 0.2631, train acc: 0.9271
+----------
+Validation: Time 2.522, loss: 0.225, acc: 0.925
+best_model of best in epoch  9
+Epoch 9/30, train loss: 0.2444, train acc: 0.9293
+----------
+Validation: Time 2.336, loss: 0.519, acc: 0.925
+Epoch 10/30, train loss: 0.2442, train acc: 0.9291
+----------
+Validation: Time 2.501, loss: 0.199, acc: 0.930
+best_model of best in epoch  11
+Epoch 11/30, train loss: 0.2204, train acc: 0.9310
+----------
+Validation: Time 2.323, loss: 0.193, acc: 0.930
+best_model of best in epoch  12
+Epoch 12/30, train loss: 0.2134, train acc: 0.9339
+----------
+Validation: Time 2.496, loss: 0.199, acc: 0.931
+Epoch 13/30, train loss: 0.1944, train acc: 0.9312
+----------
+Validation: Time 2.313, loss: 0.198, acc: 0.930
+Epoch 14/30, train loss: 0.1806, train acc: 0.9357
+----------
+Validation: Time 2.258, loss: 0.193, acc: 0.926
+Epoch 15/30, train loss: 0.1773, train acc: 0.9343
+----------
+Validation: Time 2.440, loss: 0.191, acc: 0.926
+best_model of best in epoch  16
+Epoch 16/30, train loss: 0.1607, train acc: 0.9377
+----------
+Validation: Time 2.329, loss: 0.215, acc: 0.932
+Epoch 17/30, train loss: 0.1656, train acc: 0.9341
+----------
+Validation: Time 2.357, loss: 0.192, acc: 0.924
+Epoch 18/30, train loss: 0.1526, train acc: 0.9391
+----------
+Validation: Time 2.326, loss: 0.184, acc: 0.931
+best_model of best in epoch  19
+Epoch 19/30, train loss: 0.1521, train acc: 0.9398
+----------
+Validation: Time 2.285, loss: 0.189, acc: 0.924
+Epoch 20/30, train loss: 0.1480, train acc: 0.9404
+----------
+Validation: Time 2.287, loss: 0.182, acc: 0.933
+best_model of best in epoch  21
+Epoch 21/30, train loss: 0.1438, train acc: 0.9426
+----------
+Validation: Time 2.163, loss: 0.186, acc: 0.931
+Epoch 22/30, train loss: 0.1387, train acc: 0.9441
+----------
+Validation: Time 2.276, loss: 0.188, acc: 0.928
+Epoch 23/30, train loss: 0.1339, train acc: 0.9446
+----------
+Validation: Time 2.494, loss: 0.200, acc: 0.926
+Epoch 24/30, train loss: 0.1303, train acc: 0.9462
+----------
+Validation: Time 2.275, loss: 0.189, acc: 0.927
+Epoch 25/30, train loss: 0.1231, train acc: 0.9502
+----------
+Validation: Time 2.400, loss: 0.205, acc: 0.921
+Epoch 26/30, train loss: 0.1202, train acc: 0.9522
+----------
+Validation: Time 2.270, loss: 0.208, acc: 0.925
+Epoch 27/30, train loss: 0.1133, train acc: 0.9536
+----------
+Validation: Time 2.398, loss: 0.217, acc: 0.920
+Epoch 28/30, train loss: 0.1063, train acc: 0.9595
+----------
+Validation: Time 2.184, loss: 0.250, acc: 0.917
+Epoch 29/30, train loss: 0.1001, train acc: 0.9622
+----------
+Validation: Time 2.378, loss: 0.221, acc: 0.926
+Training complete after 29 epochs in 6 m 45 s
+--------------Testing---------------------
+Validation: Time 2.132, loss: 0.172, acc: 0.931
+------------ 4 th fold ------------
+train_loader length: 111
+val_loader length: 37
+test_loader length: 37
+Epoch 0/30, train loss: 0.6541, train acc: 0.7358
+----------
+Epoch 1/30, train loss: 0.5634, train acc: 0.8775
+----------
+Validation: Time 2.315, loss: 0.452, acc: 0.913
+best_model of best in epoch  2
+Epoch 2/30, train loss: 0.4911, train acc: 0.9072
+----------
+Validation: Time 2.320, loss: 0.486, acc: 0.896
+Epoch 3/30, train loss: 0.4318, train acc: 0.9130
+----------
+Validation: Time 2.305, loss: 0.318, acc: 0.926
+best_model of best in epoch  4
+Epoch 4/30, train loss: 0.3888, train acc: 0.9164
+----------
+Validation: Time 2.201, loss: 0.354, acc: 0.920
+Epoch 5/30, train loss: 0.3515, train acc: 0.9249
+----------
+Validation: Time 2.448, loss: 0.289, acc: 0.924
+best_model of best in epoch  6
+Epoch 6/30, train loss: 0.3047, train acc: 0.9259
+----------
+Validation: Time 2.460, loss: 0.262, acc: 0.924
+best_model of best in epoch  7
+Epoch 7/30, train loss: 0.2808, train acc: 0.9288
+----------
+Validation: Time 2.460, loss: 0.267, acc: 0.912
+Epoch 8/30, train loss: 0.2920, train acc: 0.9248
+----------
+Validation: Time 2.441, loss: 0.229, acc: 0.923
+best_model of best in epoch  9
+Epoch 9/30, train loss: 0.2310, train acc: 0.9293
+----------
+Validation: Time 2.362, loss: 0.233, acc: 0.912
+Epoch 10/30, train loss: 0.2022, train acc: 0.9333
+----------
+Validation: Time 2.261, loss: 0.219, acc: 0.924
+best_model of best in epoch  11
+Epoch 11/30, train loss: 0.2221, train acc: 0.9310
+----------
+Validation: Time 2.300, loss: 0.197, acc: 0.925
+best_model of best in epoch  12
+Epoch 12/30, train loss: 0.1980, train acc: 0.9352
+----------
+Validation: Time 2.314, loss: 0.190, acc: 0.924
+best_model of best in epoch  13
+Epoch 13/30, train loss: 0.2138, train acc: 0.9358
+----------
+Validation: Time 2.320, loss: 0.195, acc: 0.928
+Epoch 14/30, train loss: 0.2117, train acc: 0.9363
+----------
+Validation: Time 2.341, loss: 0.200, acc: 0.923
+Epoch 15/30, train loss: 0.1781, train acc: 0.9317
+----------
+Validation: Time 2.254, loss: 0.198, acc: 0.923
+Epoch 16/30, train loss: 0.1591, train acc: 0.9414
+----------
+Validation: Time 2.263, loss: 0.193, acc: 0.924
+Epoch 17/30, train loss: 0.1537, train acc: 0.9398
+----------
+Validation: Time 2.263, loss: 0.200, acc: 0.922
+Epoch 18/30, train loss: 0.1497, train acc: 0.9415
+----------
+Validation: Time 2.264, loss: 0.201, acc: 0.923
+Epoch 19/30, train loss: 0.1410, train acc: 0.9454
+----------
+Validation: Time 2.302, loss: 0.198, acc: 0.921
+Epoch 20/30, train loss: 0.1355, train acc: 0.9473
+----------
+Validation: Time 2.250, loss: 0.199, acc: 0.920
+Epoch 21/30, train loss: 0.1251, train acc: 0.9504
+----------
+Validation: Time 2.274, loss: 0.211, acc: 0.920
+Epoch 22/30, train loss: 0.1240, train acc: 0.9527
+----------
+Validation: Time 2.254, loss: 0.219, acc: 0.915
+Epoch 23/30, train loss: 0.1107, train acc: 0.9569
+----------
+Validation: Time 2.303, loss: 0.212, acc: 0.921
+Epoch 24/30, train loss: 0.1018, train acc: 0.9621
+----------
+Validation: Time 2.262, loss: 0.242, acc: 0.914
+Epoch 25/30, train loss: 0.1028, train acc: 0.9609
+----------
+Validation: Time 2.482, loss: 0.226, acc: 0.916
+Epoch 26/30, train loss: 0.0879, train acc: 0.9685
+----------
+Validation: Time 2.287, loss: 0.239, acc: 0.916
+Epoch 27/30, train loss: 0.0840, train acc: 0.9682
+----------
+Validation: Time 2.479, loss: 0.243, acc: 0.918
+Epoch 28/30, train loss: 0.0751, train acc: 0.9713
+----------
+Validation: Time 2.337, loss: 0.266, acc: 0.909
+Epoch 29/30, train loss: 0.0648, train acc: 0.9765
+----------
+Validation: Time 2.384, loss: 0.323, acc: 0.909
+Training complete after 29 epochs in 6 m 43 s
+--------------Testing---------------------
+Validation: Time 1.998, loss: 0.170, acc: 0.938
