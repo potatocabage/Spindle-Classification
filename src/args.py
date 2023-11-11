@@ -1,11 +1,13 @@
 data_args = {
     "image_size": 224,
-    "time_window_ms": 1000,
+    "time_window_ms": 3000,
     "freq_min_hz": 10,
-    "freq_max_hz": 500,
+    "freq_max_hz": 16,
     "resample": 2000,
-    "n_jobs": 8,
+    "n_jobs": 16,
     "n_feature": 1,
+    "new_file_per_sample": False,
+    
 }
 
 augmentation_arg = {
@@ -27,5 +29,7 @@ args = {
     'device': 'cuda:1',
     'augmentation_arg': augmentation_arg,
     "save_checkpoint": True,
+    # balances by sampling the same number of samples from each class
+    "balance": True
 }
 

@@ -28,11 +28,19 @@ def extract_features_perpatient(folder, patient_names, feature_param, outfolder)
         feature = np.concatenate((time_frequncy_img[:, None, :, :], amplitude_coding_plot[:, None, :, :]), axis=1)
     outfolder = os.path.join(outfolder, patient_names)
     os.makedirs(outfolder, exist_ok=True)
-    np.savez_compressed(os.path.join(outfolder, "data.npz"), feature=feature, starts=starts, ends=ends, channel_names=channel_names, labels = annotation_df['label'].values)
+    if feature_param['new_file_per_sample']:
+        pass
+        # currently wrong
+        # for i in range(len(starts)):
+        #     np.savez_compressed(os.path.join(outfolder, f"sample{i}.npz"), feature=feature[i], starts=starts[i], ends=ends[i], channel_names=channel_names[i], labels = annotation_df['label'].values[i])
+    else:
+        np.savez_compressed(os.path.join(outfolder, "data.npz"), feature=feature, starts=starts, ends=ends, channel_names=channel_names, labels = annotation_df['label'].values)
+
+    del feature, starts, ends, channel_names, time_frequncy_img, amplitude_coding_plot, data, channels, annotation_df
 
 def extract_features(folder, feature_param, outfolder):
-    # patient_names = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
-    patient_names = ['Pt1', 'Pt2', 'Pt3', 'Pt4', 'Pt6', 'Pt8', 'Pt9']
+    patient_names = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
+    # patient_names = ['Pt1', 'Pt2', 'Pt3', 'Pt4', 'Pt6', 'Pt8', 'Pt9']
     for patient_name in patient_names:
         extract_features_perpatient(folder, patient_name, feature_param, outfolder)
     # make feature param to csv
@@ -42,13 +50,13 @@ def extract_features(folder, feature_param, outfolder):
 if __name__ == "__main__":
     data_folder = "/home/lawrence/Spindle/data"
     # outfolder = f"data_training/{data_folder.split('/')[-1]}"
-    outfolder = "/home/lawrence/Spindle/wavelet_data"
-    feature_param["n_jobs"] = 8
-    feature_param["n_feature"] = 1         # 1 for time-frequency image, 2 for time-frequency image and amplitude coding plot
-    feature_param["resample"] = 2000       # resample eeg signal 
-    feature_param["time_window_ms"] = 500  # time window for feature extraction
-    feature_param["freq_min_hz"] = 10      # frequency min for time-frequency image
-    feature_param["freq_max_hz"] = 500     # frequency max for time-frequency image
-    feature_param["image_size"] = 224      # image size for feature extraction
+    outfolder = "/home/lawrence/Spindle/full_wavelet_data"
+    # feature_param["n_jobs"] = 8
+    # feature_param["n_feature"] = 1         # 1 for time-frequency image, 2 for time-frequency image and amplitude coding plot
+    # feature_param["resample"] = 2000       # resample eeg signal 
+    # feature_param["time_window_ms"] = 500  # time window for feature extraction
+    # feature_param["freq_min_hz"] = 10      # frequency min for time-frequency image
+    # feature_param["freq_max_hz"] = 500     # frequency max for time-frequency image
+    # feature_param["image_size"] = 224      # image size for feature extraction
     clean_folder(outfolder)
     extract_features(data_folder, feature_param, outfolder)
