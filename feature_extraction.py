@@ -29,28 +29,35 @@ def extract_features_perpatient(folder, patient_names, feature_param, outfolder)
     outfolder = os.path.join(outfolder, patient_names)
     os.makedirs(outfolder, exist_ok=True)
     if feature_param['new_file_per_sample']:
-        pass
-        # currently wrong
-        # for i in range(len(starts)):
-        #     np.savez_compressed(os.path.join(outfolder, f"sample{i}.npz"), feature=feature[i], starts=starts[i], ends=ends[i], channel_names=channel_names[i], labels = annotation_df['label'].values[i])
+        # pass
+        for i in range(len(starts)):
+            np.savez_compressed(os.path.join(outfolder, f"sample{i}.npz"), feature=feature[i], starts=starts[i], ends=ends[i], channel_names=channel_names[i], labels = annotation_df['label'].values[i])
     else:
         np.savez_compressed(os.path.join(outfolder, "data.npz"), feature=feature, starts=starts, ends=ends, channel_names=channel_names, labels = annotation_df['label'].values)
 
+    return len(annotation_df['label'] == 'spindle'), len(annotation_df['label'] != 'spindle')
     del feature, starts, ends, channel_names, time_frequncy_img, amplitude_coding_plot, data, channels, annotation_df
 
 def extract_features(folder, feature_param, outfolder):
     patient_names = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
     # patient_names = ['Pt1', 'Pt2', 'Pt3', 'Pt4', 'Pt6', 'Pt8', 'Pt9']
+
+    spindle_count = 0
+    non_spindle_count = 0
     for patient_name in patient_names:
-        extract_features_perpatient(folder, patient_name, feature_param, outfolder)
+        s, n = extract_features_perpatient(folder, patient_name, feature_param, outfolder)
+        spindle_count += s
+        non_spindle_count += n
     # make feature param to csv
     feature_param_df = pd.DataFrame(feature_param, index=[0])
+    feature_param_df["spindle_count"] = spindle_count
+    feature_param_df["non_spindle_count"] = non_spindle_count
     feature_param_df.to_csv(os.path.join(outfolder, "data_meta.csv"), index=False)
 
 if __name__ == "__main__":
     data_folder = "/home/lawrence/Spindle/data"
     # outfolder = f"data_training/{data_folder.split('/')[-1]}"
-    outfolder = "/home/lawrence/Spindle/full_wavelet_data"
+    outfolder = "/home/lawrence/Spindle/full_jit_wavelet_data"
     # feature_param["n_jobs"] = 8
     # feature_param["n_feature"] = 1         # 1 for time-frequency image, 2 for time-frequency image and amplitude coding plot
     # feature_param["resample"] = 2000       # resample eeg signal 

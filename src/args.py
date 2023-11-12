@@ -6,7 +6,7 @@ data_args = {
     "resample": 2000,
     "n_jobs": 16,
     "n_feature": 1,
-    "new_file_per_sample": False,
+    "new_file_per_sample": True,
     
 }
 
@@ -30,6 +30,7 @@ args = {
     'augmentation_arg': augmentation_arg,
     "save_checkpoint": True,
     # balances by sampling the same number of samples from each class
-    "balance": True
+    "balance": True,
+    "new_file_per_sample": data_args['new_file_per_sample']
 }
 

@@ -9,7 +9,7 @@ import numpy as np
 from torch.utils.data import dataset, Subset, WeightedRandomSampler
 
 from src.training_utils import *
-from src.dataloader import HFODataset, read_data, parallel_process, SubsetRandomSampler, create_patient_eliminate_loader
+from src.dataloader import HFODataset, read_data, parallel_process, SubsetRandomSampler, create_patient_eliminate_loader, JITLoadDataset
 from src.model import NeuralCNN, PreProcessing
 from src.meter import Meter
 from torch.utils.data import  DataLoader, ConcatDataset
@@ -32,6 +32,7 @@ class Trainer():
         self.p_val = args["p_val"]  # Percent of the overall dataset to reserve for validation
         self.p_test = args["p_test"]  # Percent of the overall dataset to reserve for test
         self.device = args["device"]
+        self.new_file_per_sample = args["new_file_per_sample"]
 
         os.makedirs(self.res_dir, exist_ok=True)
         self.criterion = nn.BCELoss(reduction="none").to(self.device)
@@ -101,19 +102,22 @@ class Trainer():
 
     def __construct_dataset(self):
         params = [{"data_dir":self.data_dir, "patient_name":patient_name} for patient_name in sorted(os.listdir(self.data_dir)) if os.path.isdir(os.path.join(self.data_dir, patient_name))]
-        # ret = parallel_process(params, read_data, 5, front_num=1, use_kwargs=True)
-        ret = []
-        list_dataset = []
-        for i, param in enumerate(params):
-            list_dataset.append(HFODataset(read_data(**param)))
         
-        # print("length of parallel return", len(ret))
-        # for r in ret:
-        #     if isinstance(r, Exception):
-        #         print(r)
-        #         continue
-        #     print("lenght of dataset", len(r))
-        #     list_dataset.append(HFODataset(r))
+        list_dataset = []
+        
+        if self.new_file_per_sample:
+            for i, param in enumerate(params):
+                list_dataset.append(JITLoadDataset(**param))
+        else:
+            ret = parallel_process(params, read_data, 5, front_num=1, use_kwargs=True)
+            ret = []
+            print("length of parallel return", len(ret))
+            for r in ret:
+                if isinstance(r, Exception):
+                    print(r)
+                    continue
+                print("lenght of dataset", len(r))
+                list_dataset.append(HFODataset(r))
         print("length of list_dataset", len(list_dataset))
         return list_dataset
 
@@ -138,8 +142,14 @@ class Trainer():
         val_set = Subset(self.all_ds_eval, val_ind)
         test_set = Subset(self.all_ds_eval, test_ind)
         num_workers = 1
+        # currently estimating the sample weights from the full dataset to save space
+        train_weights = [(dataset_size/len(train_ind))/self.data_meta['spindle_count'].values[0], (dataset_size/len(train_ind))/self.data_meta['non_spindle_count'].values[0]]
+        val_weights = [(dataset_size/len(val_ind))/self.data_meta['spindle_count'].values[0], (dataset_size/len(val_ind))/self.data_meta['non_spindle_count'].values[0]]
+        train_sampler = WeightedRandomSampler(weights=train_weights, num_samples=len(train_set), replacement=True)
+        val_sampler = WeightedRandomSampler(weights=val_weights, num_samples=len(val_set), replacement=True)
         train_loader = DataLoader(train_set, batch_size=self.batch_size,  num_workers=num_workers, 
-                            pin_memory=True, shuffle=True)
+                            pin_memory=True, shuffle=True, sampler=train_sampler)
+        # not using val sampler for now because I want validation to as close to the overall data as possible
         val_loader = DataLoader(val_set, batch_size=self.batch_size,num_workers=num_workers, 
                                 pin_memory=True)
     

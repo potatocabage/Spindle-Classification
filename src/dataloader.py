@@ -11,32 +11,32 @@ import numpy as np
 import torch.utils.data as data
 import os 
 from src.utils_features import parallel_process
-def read_data(data_dir, patient_name, balance=False):
+def read_data(data_dir, patient_name):
     spectrum_folder = os.path.join(data_dir, patient_name)
     loaded = np.load(os.path.join(spectrum_folder,"data.npz"), allow_pickle=True)
     print(loaded.keys())
-    if balance:
-        non_spindle_ind = np.argwhere(loaded["labels"]!='spindle')
-        spindle_ind = np.argwhere(loaded["labels"]=='spindle')
-        if len(non_spindle_ind) > len(spindle_ind):
-            sampled_ind = np.random.choice(non_spindle_ind, len(spindle_ind), replace=False)
-            minority_ind = spindle_ind
-        else:
-            sampled_ind = np.random.choice(spindle_ind, len(non_spindle_ind), replace=False)
-            minority_ind = non_spindle_ind
-        feature = np.concatenate((loaded["feature"][sampled_ind], loaded["feature"][minority_ind]))
-        label = np.concatenate((loaded["labels"][sampled_ind], loaded["labels"][minority_ind]))
-        label = label.reshape(-1, 1)
-        channel_names = np.concatenate((loaded["channel_names"][sampled_ind], loaded["channel_names"][minority_ind]))
-        starts = np.concatenate((loaded["starts"][sampled_ind], loaded["starts"][minority_ind]))
-        ends = np.concatenate((loaded["ends"][sampled_ind], loaded["ends"][minority_ind]))
-    else:
-        feature = loaded["feature"]
-        label = loaded["labels"]
-        label = label.reshape(-1, 1)
-        channel_names = loaded["channel_names"]
-        starts = loaded["starts"]
-        ends = loaded["ends"]
+    # if balance:
+    #     non_spindle_ind = np.argwhere(loaded["labels"]!='spindle')
+    #     spindle_ind = np.argwhere(loaded["labels"]=='spindle')
+    #     if len(non_spindle_ind) > len(spindle_ind):
+    #         sampled_ind = np.random.choice(non_spindle_ind, len(spindle_ind), replace=False)
+    #         minority_ind = spindle_ind
+    #     else:
+    #         sampled_ind = np.random.choice(spindle_ind, len(non_spindle_ind), replace=False)
+    #         minority_ind = non_spindle_ind
+    #     feature = np.concatenate((loaded["feature"][sampled_ind], loaded["feature"][minority_ind]))
+    #     label = np.concatenate((loaded["labels"][sampled_ind], loaded["labels"][minority_ind]))
+    #     label = label.reshape(-1, 1)
+    #     channel_names = np.concatenate((loaded["channel_names"][sampled_ind], loaded["channel_names"][minority_ind]))
+    #     starts = np.concatenate((loaded["starts"][sampled_ind], loaded["starts"][minority_ind]))
+    #     ends = np.concatenate((loaded["ends"][sampled_ind], loaded["ends"][minority_ind]))
+    # else:
+    feature = loaded["feature"]
+    label = loaded["labels"]
+    label = label.reshape(-1, 1)
+    channel_names = loaded["channel_names"]
+    starts = loaded["starts"]
+    ends = loaded["ends"]
     start_end = np.concatenate((starts[:, None], ends[:, None]), axis=1)
     res = {"patient_name":patient_name,"feature": feature, "labels": label, "channel_names": channel_names, "start_end": start_end}
     return res
