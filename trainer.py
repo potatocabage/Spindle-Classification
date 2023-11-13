@@ -65,6 +65,7 @@ class Trainer():
             clean_folder(res_dir)
             model = self.train(train_loader, val_loader, res_dir)
             self.validate(test_loader, model, res_dir)
+
     
     def patientfold_crossvalidation(self):
         for i, patient in enumerate(sorted(os.listdir(self.data_dir))): 
@@ -83,14 +84,14 @@ class Trainer():
         res_dir = os.path.join(self.res_dir, "fold_%d"%k)
         os.makedirs(res_dir, exist_ok=True)
         model = self.train(train_loader, val_loader, res_dir, model)
-        loss, acc = self.validate(test_loader, model, res_dir)
+        loss, acc, f1 = self.validate(test_loader, model, res_dir)
         return model, acc
     
     def test_onefold_crossvalidation(self, K, k, model):
         _ , _ , test_loader = self.__construct_training_valid_set_kfold(K, k)
         res_dir = os.path.join(self.res_dir, "fold_%d"%k)
         os.makedirs(res_dir, exist_ok=True)
-        loss, acc  = self.validate(test_loader, model, res_dir)
+        loss, acc, f1 = self.validate(test_loader, model, res_dir)
         return model, acc
 
     def __initialize_model(self):
@@ -186,9 +187,9 @@ class Trainer():
                 loss = self.one_batch(batch, model, meter)
                 loss.backward()
                 optimizer.step()
-            loss, acc = meter.loss(), meter.accuracy()
+            loss, acc, f1 = meter.loss(), meter.accuracy(), meter.f1()
             if self.verbose:
-                print("Epoch %d/%d, train loss: %.4f, train acc: %.4f" % (epoch, self.num_epochs, loss, acc))
+                print("Epoch %d/%d, train loss: %.4f, train acc: %.4f, train f1: %.4f" % (epoch, self.num_epochs, loss, acc, f1))
                 print("-" * 10)
             # Validation
             if epoch % M == 0 and epoch != 0:
@@ -200,21 +201,21 @@ class Trainer():
     
     def validate(self, loader, model, fn = None):
         start = time.time()
-        meter = Meter("v_spike")
+        meter = Meter()
         model.eval()
         self.pre_processing.disable_random_shift()
         for _, (pt_names, feature, label, channel_name, start_end) in enumerate(loader, 0):
             with torch.no_grad():
                 batch = pack_batch(pt_names, feature, label, channel_name, start_end, self.device)
                 loss = self.one_batch(batch, model, meter, fn is not None)
-        acc, loss = meter.accuracy(), meter.loss()
+        loss, acc, f1 = meter.loss(), meter.accuracy(), meter.f1()
         if fn is not None and self.save_checkpoint:
             if self.verbose:
                 print("--------------Testing---------------------")
             meter.dump_csv(os.path.join(fn, "test.csv"))
         if self.verbose:
-            print("Validation: Time %.3f, loss: %.3f, acc: %.3f" % (time.time() - start, loss, acc))
-        return loss, acc
+            print("Validation: Time %.3f, loss: %.4f, acc: %.4f, f1: %.4f" % (time.time() - start, loss, acc, f1))
+        return loss, acc, f1
 
 
 if __name__ == "__main__":

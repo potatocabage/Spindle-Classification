@@ -15,7 +15,7 @@ def accuracy(out, labels):
     return 1.0*np.sum(correct)/float(len(labels))
 
 class Meter():
-    def __init__(self, clf_task=None):
+    def __init__(self):
         self.outputs = []
         self.intensity = []
         self.spectrum = []
@@ -23,7 +23,6 @@ class Meter():
         self.label = []
         self.channel_name = []
         self.start_end = []
-        self.clf_task = clf_task
         self.loss_ = []
         self.pt_name = []
     def add(self, pt_name, label, channel_name, start_end, output, loss=0):
@@ -45,10 +44,14 @@ class Meter():
         outputs = merge_listinfo(self.outputs)
         labels = merge_listinfo(self.label)
         return accuracy(outputs, labels)
+    
     def f1(self):
         outputs = merge_listinfo(self.outputs)
         labels = merge_listinfo(self.label)
         return f1_score(labels.squeeze(), (outputs>0.5).squeeze())
+    
+    def outputs(self):
+        return merge_listinfo((self.outputs).squeeze())
 
     def loss(self):
         return np.mean(merge_listinfo(self.loss_))
@@ -70,7 +73,7 @@ class Meter():
         df.to_csv(filename)
 
 class TrainingMeter():
-    def __init__(self, clf_task=None):
+    def __init__(self):
         self.training_acc = []
         self.validation_acc = []
         self.training_loss = []
@@ -79,7 +82,6 @@ class TrainingMeter():
         self.validation_f1 = []
         self.test_acc = []
         self.test_f1 = []
-        self.clf_task = clf_task
     def add(
         self, 
         training_acc, training_loss ,
