@@ -35,12 +35,13 @@ def extract_features_perpatient(folder, patient_names, feature_param, outfolder)
     else:
         np.savez_compressed(os.path.join(outfolder, "data.npz"), feature=feature, starts=starts, ends=ends, channel_names=channel_names, labels = annotation_df['label'].values)
 
-    return len(annotation_df['label'] == 'spindle'), len(annotation_df['label'] != 'spindle')
+    return len(annotation_df[annotation_df['label'] == 'spindle']), len(annotation_df[annotation_df['label'] != 'spindle'])
     del feature, starts, ends, channel_names, time_frequncy_img, amplitude_coding_plot, data, channels, annotation_df
 
 def extract_features(folder, feature_param, outfolder):
     patient_names = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
     # patient_names = ['Pt1', 'Pt2', 'Pt3', 'Pt4', 'Pt6', 'Pt8', 'Pt9']
+    # patient_names = ['Pt1', 'Pt2']
 
     spindle_count = 0
     non_spindle_count = 0
@@ -57,7 +58,7 @@ def extract_features(folder, feature_param, outfolder):
 if __name__ == "__main__":
     data_folder = "/home/lawrence/Spindle/data"
     # outfolder = f"data_training/{data_folder.split('/')[-1]}"
-    outfolder = "/home/lawrence/Spindle/full_jit_wavelet_data"
+    outfolder = "/home/lawrence/Spindle/wavelet_data_5_sec_100hz"
     # feature_param["n_jobs"] = 8
     # feature_param["n_feature"] = 1         # 1 for time-frequency image, 2 for time-frequency image and amplitude coding plot
     # feature_param["resample"] = 2000       # resample eeg signal 
@@ -65,5 +66,9 @@ if __name__ == "__main__":
     # feature_param["freq_min_hz"] = 10      # frequency min for time-frequency image
     # feature_param["freq_max_hz"] = 500     # frequency max for time-frequency image
     # feature_param["image_size"] = 224      # image size for feature extraction
-    clean_folder(outfolder)
-    extract_features(data_folder, feature_param, outfolder)
+    if os.path.exists(outfolder):
+        AssertionError('data already exists, aborting')
+        exit(1)
+    else:
+        clean_folder(outfolder)
+        extract_features(data_folder, feature_param, outfolder)

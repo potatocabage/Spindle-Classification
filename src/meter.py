@@ -48,10 +48,13 @@ class Meter():
     def f1(self):
         outputs = merge_listinfo(self.outputs)
         labels = merge_listinfo(self.label)
-        return f1_score(labels.squeeze(), (outputs>0.5).squeeze())
+        # print(f'label {labels.squeeze()[0]}, output {(outputs.squeeze()>0.5)[0]}')
+        # print('lengths', len(labels.squeeze()), len(outputs.squeeze()))
+        print('label ratio', (np.sum(labels.squeeze() == 1.0))/len(labels.squeeze()))
+        return f1_score(labels.squeeze(), ((outputs.squeeze()) > 0.5).astype(float))
     
-    def outputs(self):
-        return merge_listinfo((self.outputs).squeeze())
+    # def outputs(self):
+    #     return merge_listinfo((self.outputs).squeeze())
 
     def loss(self):
         return np.mean(merge_listinfo(self.loss_))

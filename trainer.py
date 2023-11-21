@@ -33,13 +33,18 @@ class Trainer():
         self.p_test = args["p_test"]  # Percent of the overall dataset to reserve for test
         self.device = args["device"]
         self.new_file_per_sample = args["new_file_per_sample"]
+        self.balance = args["balance"]
 
         os.makedirs(self.res_dir, exist_ok=True)
         self.criterion = nn.BCELoss(reduction="none").to(self.device)
         ## process 
         self.list_of_datasets = self.__construct_dataset()
         
-        self.n_input = self.list_of_datasets[0].feature.shape[1]
+        if self.new_file_per_sample:
+            self.n_input = self.list_of_datasets[0][0][1].shape[0]
+        else:
+            self.n_input = self.list_of_datasets[0].feature.shape[1]
+
         self.list_of_datasets_eval = [copy.deepcopy(d) for d in self.list_of_datasets]
         for i in range(len(self.list_of_datasets_eval)):
             self.list_of_datasets_eval[i].flip = False
@@ -111,7 +116,7 @@ class Trainer():
                 list_dataset.append(JITLoadDataset(**param))
         else:
             ret = parallel_process(params, read_data, 5, front_num=1, use_kwargs=True)
-            ret = []
+            # ret = []
             print("length of parallel return", len(ret))
             for r in ret:
                 if isinstance(r, Exception):
@@ -144,12 +149,35 @@ class Trainer():
         test_set = Subset(self.all_ds_eval, test_ind)
         num_workers = 1
         # currently estimating the sample weights from the full dataset to save space
-        train_weights = [(dataset_size/len(train_ind))/self.data_meta['spindle_count'].values[0], (dataset_size/len(train_ind))/self.data_meta['non_spindle_count'].values[0]]
-        val_weights = [(dataset_size/len(val_ind))/self.data_meta['spindle_count'].values[0], (dataset_size/len(val_ind))/self.data_meta['non_spindle_count'].values[0]]
-        train_sampler = WeightedRandomSampler(weights=train_weights, num_samples=len(train_set), replacement=True)
-        val_sampler = WeightedRandomSampler(weights=val_weights, num_samples=len(val_set), replacement=True)
-        train_loader = DataLoader(train_set, batch_size=self.batch_size,  num_workers=num_workers, 
-                            pin_memory=True, shuffle=True, sampler=train_sampler)
+        # print(dataset_size/len(train_ind))
+        # train_scale = [(dataset_size/len(train_ind))/self.data_meta['non_spindle_count'].values[0], (dataset_size/len(train_ind))/self.data_meta['spindle_count'].values[0]]
+        train_non_spindle_count = 0
+        train_spindle_count = 0
+        for sample in train_set:
+            if sample[2] == 0:
+                train_non_spindle_count += 1
+            else:
+                train_spindle_count += 1
+        train_scale = np.array([1/train_non_spindle_count, 1/train_spindle_count])
+        print(train_scale)
+        train_weights = [train_scale[int(sample[2])] for sample in train_set]
+        print(np.sum(train_weights == train_scale[0]), np.sum(train_weights == train_scale[1]))
+
+
+        # train_weights = [1/np.sum(train_set.label == 0), 1/np.sum(train_set.label)]
+        # print('TRAIN WEIGHTS', train_weights)
+        # val_weights = [(dataset_size/len(val_ind))/self.data_meta['non_spindle_count'].values[0], (dataset_size/len(val_ind))/self.data_meta['spindle_count'].values[0]]
+
+        if self.balance:
+            print('balanced train')
+            train_sampler = WeightedRandomSampler(weights=train_weights, num_samples=len(train_set), replacement=True)
+            # val_sampler = WeightedRandomSampler(weights=val_weights, num_samples=len(val_set), replacement=True) 
+            train_loader = DataLoader(train_set, batch_size=self.batch_size,  num_workers=num_workers, 
+                            pin_memory=True, sampler=train_sampler)
+        else:
+            print('not balanced train')
+            train_loader = DataLoader(train_set, batch_size=self.batch_size,  num_workers=num_workers, 
+                            pin_memory=True, shuffle=True)
         # not using val sampler for now because I want validation to as close to the overall data as possible
         val_loader = DataLoader(val_set, batch_size=self.batch_size,num_workers=num_workers, 
                                 pin_memory=True)
@@ -158,7 +186,9 @@ class Trainer():
         return train_loader, val_loader, test_loader
 
     def one_batch(self, data, model, meter, inference = False):
+        # print('before pre_processing', data['inputs'].shape)
         data_in = self.pre_processing(data["inputs"])
+        # print('after preprocessing', data_in.shape)
         data["label"] = data["label"]
         outputs = model(data_in).squeeze()
         loss = self.criterion(outputs, data["label"])
@@ -169,12 +199,13 @@ class Trainer():
             meter.add(data["pt_name"], data["label"], data["channel_name"], data["start_end"], outputs, loss)
         return loss.mean()
 
-    def train(self, train_loader, valid_loader, checkpoint_folder, model = None):
+    def train(self, train_loader, valid_loader, checkpoint_folder, model = None, patience = 3):
         if model is None :
             model = self.__initialize_model()
         optimizer =  self.__initialize_optimizer(model)
         since = time.time()
         best_loss = 1e10
+        early_stop_counter = 0
         best_model = None   
         for epoch in tqdm(range(self.num_epochs), disable=self.verbose):
             self.pre_processing.enable_random_shift()
@@ -193,8 +224,14 @@ class Trainer():
                 print("-" * 10)
             # Validation
             if epoch % M == 0 and epoch != 0:
-                v_loss, v_acc  = self.validate(valid_loader, model, fn = None)
+                v_loss, v_acc, v_f1  = self.validate(valid_loader, model, fn = None)
+                prev_best_loss = best_loss
                 best_loss, best_model = pick_best_model(model, best_model ,epoch, v_loss, best_loss, checkpoint_folder, model_name="best", preprocessing = self.pre_processing, save = self.save_checkpoint, verbose = self.verbose)
+                # if best_loss == prev_best_loss:
+                #     early_stop_counter += 1
+                #     if early_stop_counter >= patience:
+                #         print(f"Early stopped after {patience} epochs of not improving")
+                        
         time_elapsed = time.time() - since
         print(f"Training complete after {epoch} epochs in {int(time_elapsed // 60)} m {int(time_elapsed % 60)} s")
         return best_model

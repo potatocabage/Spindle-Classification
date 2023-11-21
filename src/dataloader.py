@@ -38,7 +38,7 @@ def read_data(data_dir, patient_name):
     starts = loaded["starts"]
     ends = loaded["ends"]
     start_end = np.concatenate((starts[:, None], ends[:, None]), axis=1)
-    res = {"patient_name":patient_name,"feature": feature, "labels": label, "channel_names": channel_names, "start_end": start_end}
+    res = {"patient_name": patient_name,"feature": feature, "labels": label, "channel_names": channel_names, "start_end": start_end}
     return res
 
 def create_list_dataset(data_dir):
@@ -111,7 +111,7 @@ class JITLoadDataset(Dataset):
     
     def __getitem__(self, ind):
         loaded = np.load(os.path.join(self.data_dir, self.files[ind]), allow_pickle=True)
-        feature = torch.from_numpy(loaded["feature"])
+        feature = torch.from_numpy(loaded["feature"]).squeeze()
         label = loaded["labels"]
         label = label.reshape(-1, 1)
         channel_names = loaded["channel_names"]

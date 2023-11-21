@@ -18,7 +18,8 @@ class NeuralCNN(torch.nn.Module):
         self.outputs = outputs
         self.channel_selection = channel_selection
         self.cnn = models.resnet18(weights=ResNet18_Weights.DEFAULT)
-        self.cnn.conv1= nn.Conv2d(self.in_channels, 64, kernel_size=7, stride=2, padding=3,bias=False)
+        # self.cnn.conv1= nn.Conv2d(self.in_channels, 64, kernel_size=7, stride=2, padding=3,bias=False)
+        self.cnn.conv1= nn.Conv2d(self.in_channels, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.cnn.fc = nn.Sequential(nn.Linear(512, 32))
         for param in self.cnn.fc.parameters():
             param.requires_grad = not freeze
@@ -155,6 +156,7 @@ class PreProcessing():
         time_crop_index = self.crop_time_index_r.copy()
         if self.random_shift:
             shift = np.random.randint(-self.random_shift_index, self.random_shift_index)
+            # print('shift', shift)
             time_crop_index += shift
         data = data[:,:,self.crop_freq_index[0]:self.crop_freq_index[1] , time_crop_index[0]:time_crop_index[1]]
         return data
